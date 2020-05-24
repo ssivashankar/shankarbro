@@ -1,0 +1,14 @@
+.navbar {
+    margin-bottom: 20px;
+}
+
+.mTop20 {
+    margin-top: 20px;
+}
+
+a {
+    color: #d8d8d8;
+}
+a.active {
+    color: #fff;
+}
