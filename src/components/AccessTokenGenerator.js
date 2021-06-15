@@ -1,18 +1,33 @@
 import React, { useState } from 'react'
-import { Alert, Button, Jumbotron, Form, Modal, Spinner, Toast } from 'react-bootstrap'
+import { Alert, Button, Form, Modal, Spinner, Toast } from 'react-bootstrap'
 import axios from 'axios'
 
 function AccessTokenGenerator() {
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState('')
-    const [showA, setShowA] = useState(true)
-    const [formValues, setFormValues] = useState('')
+    const [toast, setToast] = useState({ showToast: true, refresh: false})
+    const [formValues, setFormValues] = useState(null)
+    const [validated, setValidated] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    const toggleShowA = () => setShowA(!showA);
+    const showToast = toast.showToast;
+    const refresh = toast.refresh;
+    const { env, customerID, pass } = formValues || {}
+
+    function handleToast() {
+        setToast({
+            showToast: !showToast,
+            refresh: !refresh
+        })
+        setFormValues({
+            env: '',
+            customerID: '',
+            pass: ''
+        })
+    }
 
     function handleSubmit(e) {
         e.preventDefault()
+        console.log(e)
         setFormValues({
             env: e.target.env.value,
             customerID: e.target.customerID.value,
@@ -34,7 +49,7 @@ function AccessTokenGenerator() {
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
             {
                 message &&
                 <Form.Row className="mTop20">
@@ -43,19 +58,20 @@ function AccessTokenGenerator() {
                 </Alert>  
                 </Form.Row>                  
             }
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group controlId="environment">
                 <Form.Label>Select the Environment</Form.Label>
-                <Form.Control as="select" name="env">
+                <Form.Control as="select" name="env" value={env}>
                     <option>Select Environment</option>
-                    <option>1</option>
+                    <option>one</option>
+                    <option>two</option>
                 </Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group controlId="customerID">
                 <Form.Label>Enter the Customer ID:</Form.Label>
-                <Form.Control type="text" name="customerID" placeholder="Customer ID" />
+                <Form.Control value={customerID} type="text" name="customerID" placeholder="Customer ID" />
             </Form.Group>
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group value={pass} controlId="pass">
                 <Form.Label>Enter the Password:</Form.Label>
                 <Form.Control type="password" name="pass" placeholder="Password" />
             </Form.Group>
@@ -64,7 +80,7 @@ function AccessTokenGenerator() {
             </Button>
             {
                 !show && formValues &&
-                <Toast className="mTop20" show={showA} onClose={toggleShowA}>
+                <Toast className="mTop20" show={showToast} onClose={handleToast}>
                     <Toast.Header>
                         <strong className="mr-auto">Form Data</strong>
                     </Toast.Header>

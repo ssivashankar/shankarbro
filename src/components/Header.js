@@ -3,12 +3,9 @@ import { NavLink } from 'react-router-dom'
 import {
     Nav,
     Navbar, 
-    NavItem,
-    NavDropdown,
     Form,
     FormControl,
-    Button,
-    LinkContainer
+    Button
 } from 'react-bootstrap';
 
 function Header() {
