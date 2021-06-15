@@ -11,4 +11,5 @@ a {
 }
 a.active {
     color: #fff;
+    font-size: 12px;
 }
